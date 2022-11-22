@@ -21,29 +21,35 @@ public class AppUser implements UserDetails {
 
 
     @SequenceGenerator(
-            name = "student_sequence",
-            sequenceName = "student_sequence",
+            name = "employee_sequence",
+            sequenceName = "employee_sequence",
             allocationSize = 1
     )
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "student_sequence"
+            generator = "employee_sequence"
     )
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
+    
+    
     
     @Enumerated(EnumType.STRING)
     private AppUserRole appUserRole;
+	
+    private String designation;
+    private String password;
+
     private Boolean locked = false;
     private Boolean enabled = false;
 
     public AppUser(String firstName,
                    String lastName,
                    String email,
+		   String designation,
                    String password,
                    AppUserRole appUserRole) {
         this.firstName = firstName;
@@ -51,6 +57,7 @@ public class AppUser implements UserDetails {
         this.email = email;
         this.password = password;
         this.appUserRole = appUserRole;
+	this.designation = designation;
     }
 
     @Override
@@ -63,6 +70,11 @@ public class AppUser implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    
+    public String getDesignation() {
+        return designation;
     }
 
     @Override

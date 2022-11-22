@@ -1,10 +1,20 @@
 package Authentication.Authentication.Registration;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import javax.swing.text.html.Option;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import Authentication.Authentication.AppUser.AppUser;
+import Authentication.Authentication.AppUser.AppUserRepository;
 import Authentication.Authentication.AppUser.AppUserRole;
 import Authentication.Authentication.AppUser.AppUserService;
 import Authentication.Authentication.Registration.token.ConfirmationToken;
@@ -16,6 +26,10 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class RegistrationService {
 
+      
+        @Autowired
+    private final AppUserRepository appUserRepository;
+        private final BCryptPasswordEncoder bCryptPasswordEncoder; //using BCrypt for 
     private final AppUserService appUserService;
     private final EmailValidator emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
@@ -35,6 +49,7 @@ public class RegistrationService {
                         request.getLastName(),
                         request.getEmail(),
                         request.getPassword(),
+			request.getDesignation(),
                         AppUserRole.USER
 
                 )
@@ -139,4 +154,42 @@ public class RegistrationService {
                 "\n" +
                 "</div></div>";
     }
+
+        public Optional<AppUser> findByID(Long empid){
+                return appUserRepository.findById(empid);
+        }
+
+        public List<AppUser> getEmployees(){
+                return (List<AppUser>) appUserRepository.findAll();
+        }
+
+        public void deleteEmployee(Long empid) {
+		appUserRepository.deleteById(empid);
+	}
+
+        public AppUser updateEmp(AppUser savedAppUser) {
+
+                Optional<AppUser> appUser = appUserRepository.findById(savedAppUser.getId());
+                if(appUser.isPresent()){
+        
+                        AppUser UpdateUser = appUser.get();
+                        UpdateUser.setAppUserRole(savedAppUser.getAppUserRole());
+                        UpdateUser.setDesignation(savedAppUser.getDesignation());
+
+
+                        String encodedPassword = bCryptPasswordEncoder
+                        .encode(savedAppUser.getPassword());
+
+                        
+
+
+                        UpdateUser.setPassword(encodedPassword);
+                        
+                        AppUser newUser = appUserRepository.save(UpdateUser);
+                        return newUser;
+               }
+               else{
+                        return null;
+               }
+        }
 }
