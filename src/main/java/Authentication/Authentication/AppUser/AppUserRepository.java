@@ -21,6 +21,16 @@ public interface AppUserRepository
             "SET a.enabled = TRUE WHERE a.email = ?1")
     int enableAppUser(String email);
 
-    
+
+
+
+    @Query("DELETE FROM AppUser a " +
+    "WHERE a.id = ?1")
+   boolean deleteUserById(Long id);
+
+
+
+
+
 
 }

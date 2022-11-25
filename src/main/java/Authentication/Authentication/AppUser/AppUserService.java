@@ -1,8 +1,11 @@
 package Authentication.Authentication.AppUser;
 
 import Authentication.Authentication.Registration.token.ConfirmationToken;
+import Authentication.Authentication.Registration.token.ConfirmationTokenRepository;
 import Authentication.Authentication.Registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +20,10 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class AppUserService implements UserDetailsService {
+
+
+@Autowired
+private final ConfirmationTokenRepository confirmationTokenRepository;
 
     private final static String USER_NOT_FOUND_MSG =
             "user with email %s not found";
@@ -74,7 +81,22 @@ public class AppUserService implements UserDetailsService {
         return appUserRepository.enableAppUser(email);
     }
 
+    public boolean deleteUserById(AppUser appUser){
+        
+        Optional<AppUser> cToken = appUserRepository.findById(appUser.getId());
+        Optional<ConfirmationToken> cT = confirmationTokenRepository.findById(appUser.getId());
+        if (cToken.isPresent())
+        {
+                confirmationTokenRepository.deleteById(cT.get().getId());
+                appUserRepository.deleteById(cToken.get().getId());
+            
+            return true;
 
+        }
+
+
+        return false;
+    }
  
 
 }

@@ -8,6 +8,7 @@ import javax.swing.text.html.Option;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -18,6 +19,7 @@ import Authentication.Authentication.AppUser.AppUserRepository;
 import Authentication.Authentication.AppUser.AppUserRole;
 import Authentication.Authentication.AppUser.AppUserService;
 import Authentication.Authentication.Registration.token.ConfirmationToken;
+import Authentication.Authentication.Registration.token.ConfirmationTokenRepository;
 import Authentication.Authentication.Registration.token.ConfirmationTokenService;
 import Authentication.Authentication.email.EmailSender;
 import lombok.AllArgsConstructor;
@@ -34,6 +36,12 @@ public class RegistrationService {
     private final EmailValidator emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
+
+// Change
+
+       
+
+
 
     public String register(RegistrationRequest request) {
         boolean isValidEmail = emailValidator.
@@ -166,6 +174,29 @@ public class RegistrationService {
         public void deleteEmployee(Long empid) {
 		appUserRepository.deleteById(empid);
 	}
+
+        public void deleteAllDetails(AppUser savedAppUser){
+                // confirmationTokenService.deleteTokenById(confirmationToken);
+                // appUserService.deleteUserById(savedAppUser);
+
+                // Optional<AppUser> appUser = appUserRepository.findById(savedAppUser.getId());
+                // Optional<ConfirmationToken> cT = confirmationTokenRepository.findById(confirmationToken.getId());
+
+                // if(appUser.isPresent()){
+        
+                //         AppUser UpdateUser = appUser.get();
+                //         ConfirmationToken cToken = cT.get();
+                        
+                        
+                //         confirmationTokenRepository.deleteById(cToken.getId());
+                //         appUserRepository.deleteById(UpdateUser.getId());
+                
+                
+                // 
+        
+        }
+
+
 
         public AppUser updateEmp(AppUser savedAppUser) {
 

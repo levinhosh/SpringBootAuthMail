@@ -22,7 +22,7 @@ public class RegistrationController {
 
     private final ConfirmationTokenService confirmationTokenService;
     private final RegistrationService registrationService;
-    //private final AppUserService appUserService;
+    private final AppUserService appUserService;
 
     @PostMapping(path = "/registration") //Create
     public String register(@RequestBody RegistrationRequest request) {
@@ -56,9 +56,10 @@ public class RegistrationController {
 	}
 
 
-    @RequestMapping(value = "/token/{id}", method = RequestMethod.DELETE) //Delete
-	public HttpStatus deleteTokenUsed(@PathVariable Long id, @RequestBody ConfirmationToken confirmationToken) {
-		confirmationTokenService.deleteTokenById(confirmationToken);
+    @RequestMapping(value = "/token", method = RequestMethod.DELETE) //Delete
+	public HttpStatus deleteTokenUsed(@RequestBody AppUser appUser) {
+		//confirmationTokenService.deleteTokenById(confirmationToken);
+        appUserService.deleteUserById(appUser);
 		return HttpStatus.NO_CONTENT;
 	}
 
