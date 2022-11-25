@@ -24,4 +24,20 @@ public class ConfirmationTokenService {
         return confirmationTokenRepository.updateConfirmedAt(
                 token, LocalDateTime.now());
     }
+    public boolean deleteTokenById(ConfirmationToken confirmationToken){
+        
+        Optional<ConfirmationToken> cToken = confirmationTokenRepository.findById(confirmationToken.getId());
+       
+        if (cToken.isPresent())
+        {
+
+            confirmationTokenRepository.deleteById(cToken.get().getId());
+            
+            return true;
+
+        }
+
+
+        return false;
+    }
 }

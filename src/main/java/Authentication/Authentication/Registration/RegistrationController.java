@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import Authentication.Authentication.AppUser.AppUser;
 import Authentication.Authentication.AppUser.AppUserService;
+import Authentication.Authentication.Registration.token.ConfirmationToken;
+import Authentication.Authentication.Registration.token.ConfirmationTokenService;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class RegistrationController {
 
+    private final ConfirmationTokenService confirmationTokenService;
     private final RegistrationService registrationService;
     //private final AppUserService appUserService;
 
@@ -49,6 +52,13 @@ public class RegistrationController {
     @RequestMapping(value = "/employee/{id}", method = RequestMethod.DELETE) //Delete
 	public HttpStatus deletePersnonel(@PathVariable Long id) {
 		registrationService.deleteEmployee(id);
+		return HttpStatus.NO_CONTENT;
+	}
+
+
+    @RequestMapping(value = "/token/{id}", method = RequestMethod.DELETE) //Delete
+	public HttpStatus deleteTokenUsed(@PathVariable Long id, @RequestBody ConfirmationToken confirmationToken) {
+		confirmationTokenService.deleteTokenById(confirmationToken);
 		return HttpStatus.NO_CONTENT;
 	}
 

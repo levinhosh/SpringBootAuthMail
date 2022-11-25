@@ -23,4 +23,9 @@ public interface ConfirmationTokenRepository
             "WHERE c.token = ?1")
     int updateConfirmedAt(String token,
                           LocalDateTime confirmedAt);
+
+
+        @Query("DELETE FROM ConfirmationToken c " +
+        "WHERE c.id = ?1")
+       boolean deleteTokenById(Long id);
 }
