@@ -56,9 +56,9 @@ public class RegistrationService {
                         request.getFirstName(),
                         request.getLastName(),
                         request.getEmail(),
+                        request.getDesignation(),
                         request.getPassword(),
-			request.getDesignation(),
-                        AppUserRole.USER
+			AppUserRole.USER
 
                 )
         );
@@ -175,7 +175,7 @@ public class RegistrationService {
 		appUserRepository.deleteById(empid);
 	}
 
-        public void deleteAllDetails(AppUser savedAppUser){
+       // public void deleteAllDetails(AppUser savedAppUser){
                 // confirmationTokenService.deleteTokenById(confirmationToken);
                 // appUserService.deleteUserById(savedAppUser);
 
@@ -194,33 +194,86 @@ public class RegistrationService {
                 
                 // 
         
+       // }
+
+
+//
+//        public AppUser updateEmp(AppUser savedAppUser) {
+//
+//                Optional<AppUser> appUser = appUserRepository.findById(savedAppUser.getId());
+//                if(appUser.isPresent()){
+//
+//                        AppUser UpdateUser = appUser.get();
+//                        UpdateUser.setAppUserRole(savedAppUser.getAppUserRole());
+//                        UpdateUser.setDesignation(savedAppUser.getDesignation());
+//
+//
+//                        String encodedPassword = bCryptPasswordEncoder
+//                        .encode(savedAppUser.getPassword());
+//
+//
+//
+//
+//                        UpdateUser.setPassword(encodedPassword);
+//
+//                        AppUser newUser = appUserRepository.save(UpdateUser);
+//                        return newUser;
+//               }
+//               else{
+//                        return null;
+//               }
+//        }
+
+
+        /* Update with id only
+
+         */
+
+//    public AppUser updateEmpP(Long id,AppUser savedAppUser) {
+//
+//        Optional<AppUser> appUser = appUserRepository.findById(id);
+//
+//        if(appUser.isPresent()){
+//
+//            AppUser UpdateUser = appUser.get(); // acquired fields
+//
+//
+//
+//
+//
+//            UpdateUser.setAppUserRole(savedAppUser.getAppUserRole());
+//            UpdateUser.setDesignation(savedAppUser.getDesignation());
+//
+//
+//            String encodedPassword = bCryptPasswordEncoder
+//                    .encode(savedAppUser.getPassword());
+//
+//
+//
+//
+//            UpdateUser.setPassword(encodedPassword);
+//
+//            AppUser newUser = appUserRepository.save(UpdateUser);
+//            return newUser;
+//        }
+//        else{
+//            return null;
+//        }
+//    }
+
+
+    public AppUser updateUser(Long id, AppUser appUser) {
+        AppUser appUserFound = appUserRepository.findById(id).get();
+        if (Objects.nonNull(appUser.getAppUserRole()) && !"".equalsIgnoreCase(String.valueOf(appUser.getAppUserRole()))){
+            appUserFound.setAppUserRole(appUser.getAppUserRole());
         }
-
-
-
-        public AppUser updateEmp(AppUser savedAppUser) {
-
-                Optional<AppUser> appUser = appUserRepository.findById(savedAppUser.getId());
-                if(appUser.isPresent()){
-        
-                        AppUser UpdateUser = appUser.get();
-                        UpdateUser.setAppUserRole(savedAppUser.getAppUserRole());
-                        UpdateUser.setDesignation(savedAppUser.getDesignation());
-
-
-                        String encodedPassword = bCryptPasswordEncoder
-                        .encode(savedAppUser.getPassword());
-
-                        
-
-
-                        UpdateUser.setPassword(encodedPassword);
-                        
-                        AppUser newUser = appUserRepository.save(UpdateUser);
-                        return newUser;
-               }
-               else{
-                        return null;
-               }
+        if (Objects.nonNull(appUser.getPassword()) && !"".equalsIgnoreCase(appUser.getPassword())){
+            appUserFound.setPassword(appUser.getPassword());
         }
+        if (Objects.nonNull(appUser.getDesignation()) && !"".equalsIgnoreCase(appUser.getDesignation())){
+            appUserFound.setDesignation(appUser.getDesignation());
+        }
+        return appUserRepository.save(appUserFound);
+    }
+
 }

@@ -81,10 +81,12 @@ private final ConfirmationTokenRepository confirmationTokenRepository;
         return appUserRepository.enableAppUser(email);
     }
 
-    public boolean deleteUserById(AppUser appUser){
+    public boolean deleteUserById(Long id){
         
-        Optional<AppUser> cToken = appUserRepository.findById(appUser.getId());
-        Optional<ConfirmationToken> cT = confirmationTokenRepository.findById(appUser.getId());
+        //Optional<AppUser> cToken = appUserRepository.findById(appUser.getId());
+        Optional<AppUser> cToken = appUserRepository.findById(id);
+        //Optional<ConfirmationToken> cT = confirmationTokenRepository.findById(appUser.getId());
+        Optional<ConfirmationToken> cT = confirmationTokenRepository.findById(id);
         if (cToken.isPresent())
         {
                 confirmationTokenRepository.deleteById(cT.get().getId());

@@ -24,7 +24,7 @@ public class RegistrationController {
     private final RegistrationService registrationService;
     private final AppUserService appUserService;
 
-    @PostMapping(path = "/registration") //Create
+    @PostMapping(path = "/employee/add") //Create
     public String register(@RequestBody RegistrationRequest request) {
         registrationService.register(request);
 	return "Account registered Successfully, Activation mail has been sent to User's Email Account";
@@ -36,13 +36,13 @@ public class RegistrationController {
     }
 
 
-    @GetMapping(path = "employees") //Read all
+    @GetMapping(path = "employee/all") //Read all
     public List<?> Employees()
     {
         return registrationService.getEmployees();
     }
 
-    @RequestMapping(value = "/employee/{id}", method = RequestMethod.GET) //Read by ID
+    @RequestMapping(value = "find/{id}", method = RequestMethod.GET) //Read by ID
 	public @ResponseBody Optional<Optional<?>> getUserById(@PathVariable Long id) {
         Optional<?> appUser = registrationService.findByID(id);
 		return Optional.ofNullable(appUser);
@@ -56,19 +56,27 @@ public class RegistrationController {
 	}
 
 
-    @RequestMapping(value = "/token", method = RequestMethod.DELETE) //Delete
-	public HttpStatus deleteTokenUsed(@RequestBody AppUser appUser) {
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE) //Delete
+	public HttpStatus deleteTokenUsed(@PathVariable Long id) {
 		//confirmationTokenService.deleteTokenById(confirmationToken);
-        appUserService.deleteUserById(appUser);
+        appUserService.deleteUserById(id);
 		return HttpStatus.NO_CONTENT;
 	}
 
 
 
-    @RequestMapping(value="/employee/{id}", method = RequestMethod.PUT)  // Update by id
-    public HttpStatus updateEmployee(@PathVariable Long id, @RequestBody AppUser appUser) {
+//    @RequestMapping(value="/employee/{id}", method = RequestMethod.PUT)  // Update by id
+//    public HttpStatus updateEmployee(@PathVariable Long id, @RequestBody AppUser appUser) {
+//
+//        return registrationService.updateEmp(appUser) != null ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST;
+//
+//    }
 
-        return registrationService.updateEmp(appUser) != null ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST;
+
+    @RequestMapping(value="/update/{id}", method = RequestMethod.PUT)  // Update by id
+    public HttpStatus updateEmployeek(@PathVariable("id") Long id, @RequestBody AppUser appUser) {
+
+        return registrationService.updateUser(id,appUser) != null ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST;
 
     }
 
