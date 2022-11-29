@@ -36,7 +36,7 @@ public class RegistrationController {
     }
 
 
-    @GetMapping(path = "employee/all") //Read all
+    @GetMapping(path = "employees/all") //Read all
     public List<?> Employees()
     {
         return registrationService.getEmployees();
@@ -50,9 +50,9 @@ public class RegistrationController {
 	}
 
     @RequestMapping(value = "/employee/{id}", method = RequestMethod.DELETE) //Delete
-	public HttpStatus deletePersnonel(@PathVariable Long id) {
+	public String deletePersnonel(@PathVariable Long id) {
 		registrationService.deleteEmployee(id);
-		return HttpStatus.NO_CONTENT;
+		return "Deleted Successfully";
 	}
 
 
@@ -74,9 +74,11 @@ public class RegistrationController {
 
 
     @RequestMapping(value="/update/{id}", method = RequestMethod.PUT)  // Update by id
-    public HttpStatus updateEmployeek(@PathVariable("id") Long id, @RequestBody AppUser appUser) {
+    public String updateEmployeek(@PathVariable("id") Long id, @RequestBody AppUser appUser) {
 
-        return registrationService.updateUser(id,appUser) != null ? HttpStatus.ACCEPTED : HttpStatus.BAD_REQUEST;
+        registrationService.updateUser(id,appUser);
+
+        return "Updated Successfully";
 
     }
 
