@@ -1,6 +1,7 @@
 package Authentication.Authentication.Registration.token;
 
 import Authentication.Authentication.AppUser.AppUser;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,6 +39,7 @@ public class ConfirmationToken {
     private LocalDateTime confirmedAt;
 
     @ManyToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(
             nullable = false,
             name = "app_user_id"

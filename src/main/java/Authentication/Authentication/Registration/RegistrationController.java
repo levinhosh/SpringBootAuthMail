@@ -1,11 +1,15 @@
 package Authentication.Authentication.Registration;
 
+import Authentication.Authentication.Reports.DailyReports;
+import Authentication.Authentication.Reports.DailyReportsService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import Authentication.Authentication.AppUser.AppUser;
 import Authentication.Authentication.AppUser.AppUserService;
-import Authentication.Authentication.Registration.token.ConfirmationToken;
 import Authentication.Authentication.Registration.token.ConfirmationTokenService;
 
 import java.util.List;
@@ -18,11 +22,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "api/v1/registration")
 @AllArgsConstructor
 @CrossOrigin(origins = "*")
+@Slf4j
 public class RegistrationController {
 
     private final ConfirmationTokenService confirmationTokenService;
     private final RegistrationService registrationService;
     private final AppUserService appUserService;
+
+
+    @Autowired
+    private DailyReportsService dailyReportsService;
+
+    //public ResponseEntity
 
     @PostMapping(path = "/employee/add") //Create
     public String register(@RequestBody RegistrationRequest request) {
@@ -36,10 +47,16 @@ public class RegistrationController {
     }
 
 
-    @GetMapping(path = "employees/all") //Read all
+    @GetMapping(path = "employee/all") //Read all
     public List<?> Employees()
     {
         return registrationService.getEmployees();
+    }
+
+    @GetMapping(path = "/report/all") //Read all
+    public List<DailyReports> allReports()
+    {
+        return dailyReportsService.getAllReports();
     }
 
     @RequestMapping(value = "find/{id}", method = RequestMethod.GET) //Read by ID
@@ -81,6 +98,32 @@ public class RegistrationController {
         return "Updated Successfully";
 
     }
+
+    @PostMapping(value="/create/report/{appUser}")
+    public DailyReports createReport(@RequestBody DailyReports dailyReports, @PathVariable Long appUser) {
+        try {
+            return dailyReportsService.createReport(dailyReports, appUser);
+        }catch (Exception e){
+            log.info("Error{} "+e);
+            return null;
+        }
+    }
+
+    @GetMapping(value = "/report/{id}") //Read by single user records
+    public @ResponseBody Optional<List<DailyReports>> getUserByReport(@PathVariable Long id) {
+        List<DailyReports> dailyReports = dailyReportsService.readReport(id);
+        return Optional.ofNullable(dailyReports);
+
+    }
+
+    @RequestMapping(value="/updateReport/{id}", method = RequestMethod.PUT)  // Update by id
+    public DailyReports updateDailyReports(@PathVariable("id") Long id, @RequestBody DailyReports dailyReports) {
+
+        return (dailyReportsService.updateUserReport(id,dailyReports));
+
+    }
+
+
 
 
 }

@@ -1,5 +1,7 @@
 package Authentication.Authentication.AppUser;
 
+import Authentication.Authentication.Registration.token.ConfirmationToken;
+import Authentication.Authentication.Reports.DailyReports;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +11,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Getter
 @Setter
@@ -45,6 +49,12 @@ public class AppUser implements UserDetails {
 
     private Boolean locked = false;
     private Boolean enabled = false;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "appUser")
+    private List<DailyReports> dailyReports = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "appUser")
+    private List<ConfirmationToken> confirmationTokens = new ArrayList<>();
 
     public AppUser(String firstName,
                    String lastName,

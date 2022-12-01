@@ -3,6 +3,12 @@ package Authentication.Authentication.AppUser;
 import Authentication.Authentication.Registration.token.ConfirmationToken;
 import Authentication.Authentication.Registration.token.ConfirmationTokenRepository;
 import Authentication.Authentication.Registration.token.ConfirmationTokenService;
+import Authentication.Authentication.Reports.DailyReports;
+import Authentication.Authentication.Reports.DailyReportsRepository;
+import Authentication.Authentication.Reports.Enums.ClientNameEnum;
+import Authentication.Authentication.Reports.Enums.DepartmentEnum;
+import Authentication.Authentication.Reports.Enums.ProductNameEnum;
+import Authentication.Authentication.Reports.Enums.ReportCategory;
 import lombok.AllArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +30,9 @@ public class AppUserService implements UserDetailsService {
 
 
 @Autowired
-private final ConfirmationTokenRepository confirmationTokenRepository;
+private ConfirmationTokenRepository confirmationTokenRepository;
+
+
 
     private final static String USER_NOT_FOUND_MSG =
             "user with email %s not found";
@@ -99,6 +108,9 @@ private final ConfirmationTokenRepository confirmationTokenRepository;
 
         return false;
     }
+
+
+
  
 
 }

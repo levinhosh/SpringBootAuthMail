@@ -31,13 +31,13 @@ public class RegistrationService {
       
         @Autowired
     private final AppUserRepository appUserRepository;
-        private final BCryptPasswordEncoder bCryptPasswordEncoder; //using BCrypt for 
+        private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AppUserService appUserService;
     private final EmailValidator emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
 
-// Change
+
 
        
 
@@ -175,91 +175,6 @@ public class RegistrationService {
 		appUserRepository.deleteById(empid);
 	}
 
-       // public void deleteAllDetails(AppUser savedAppUser){
-                // confirmationTokenService.deleteTokenById(confirmationToken);
-                // appUserService.deleteUserById(savedAppUser);
-
-                // Optional<AppUser> appUser = appUserRepository.findById(savedAppUser.getId());
-                // Optional<ConfirmationToken> cT = confirmationTokenRepository.findById(confirmationToken.getId());
-
-                // if(appUser.isPresent()){
-        
-                //         AppUser UpdateUser = appUser.get();
-                //         ConfirmationToken cToken = cT.get();
-                        
-                        
-                //         confirmationTokenRepository.deleteById(cToken.getId());
-                //         appUserRepository.deleteById(UpdateUser.getId());
-                
-                
-                // 
-        
-       // }
-
-
-//
-//        public AppUser updateEmp(AppUser savedAppUser) {
-//
-//                Optional<AppUser> appUser = appUserRepository.findById(savedAppUser.getId());
-//                if(appUser.isPresent()){
-//
-//                        AppUser UpdateUser = appUser.get();
-//                        UpdateUser.setAppUserRole(savedAppUser.getAppUserRole());
-//                        UpdateUser.setDesignation(savedAppUser.getDesignation());
-//
-//
-//                        String encodedPassword = bCryptPasswordEncoder
-//                        .encode(savedAppUser.getPassword());
-//
-//
-//
-//
-//                        UpdateUser.setPassword(encodedPassword);
-//
-//                        AppUser newUser = appUserRepository.save(UpdateUser);
-//                        return newUser;
-//               }
-//               else{
-//                        return null;
-//               }
-//        }
-
-
-        /* Update with id only
-
-         */
-
-//    public AppUser updateEmpP(Long id,AppUser savedAppUser) {
-//
-//        Optional<AppUser> appUser = appUserRepository.findById(id);
-//
-//        if(appUser.isPresent()){
-//
-//            AppUser UpdateUser = appUser.get(); // acquired fields
-//
-//
-//
-//
-//
-//            UpdateUser.setAppUserRole(savedAppUser.getAppUserRole());
-//            UpdateUser.setDesignation(savedAppUser.getDesignation());
-//
-//
-//            String encodedPassword = bCryptPasswordEncoder
-//                    .encode(savedAppUser.getPassword());
-//
-//
-//
-//
-//            UpdateUser.setPassword(encodedPassword);
-//
-//            AppUser newUser = appUserRepository.save(UpdateUser);
-//            return newUser;
-//        }
-//        else{
-//            return null;
-//        }
-//    }
 
 
     public AppUser updateUser(Long id, AppUser appUser) {
@@ -271,7 +186,7 @@ public class RegistrationService {
             appUserFound.setPassword(appUser.getPassword());
         }
         if (Objects.nonNull(appUser.getDesignation()) && !"".equalsIgnoreCase(appUser.getDesignation())){
-            appUserFound.setDesignation(appUser.getDesignation());
+            appUserFound.setDesignation(bCryptPasswordEncoder.encode(appUser.getDesignation()));
         }
         return appUserRepository.save(appUserFound);
     }
